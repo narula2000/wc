@@ -19,3 +19,22 @@ Replicate these functionality from the Unix command line tool [`wc`](https://lin
 
 
 As part of the challenge we will be using the provided [test text file](./test.txt).
+
+## Development
+
+To setup this project you will have to have [uv](https://github.com/astral-sh/uv) installed.
+
+To run the commands it is simply running:
+```bash
+uv run main.py -h
+```
+
+To run the testing suite you will call:
+```bash
+uv run pytest -s -v
+```
+
+To run the linter you will call:
+```bash
+uv run ruff check --fix .
+```
