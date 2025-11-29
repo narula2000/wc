@@ -31,12 +31,22 @@ def count_words(file):
     return word_count
 
 
+def count_byte(file):
+    char_count = 0
+    with open(file, "rb") as txt:
+        for line in txt:
+            for char in line:
+                char_count += 1
+    return char_count
+
+
 def flag_hanlder(arguments):
     if arguments.lines:
         line_count = count_lines(arguments.file)
         print(f"{line_count} {arguments.file}")
     elif arguments.bytes:
-        print("Byte count detected")
+        byte_count = count_byte(arguments.file)
+        print(f"{byte_count} {arguments.file}")
     elif arguments.words:
         word_count = count_words(arguments.file)
         print(f"{word_count} {arguments.file}")
