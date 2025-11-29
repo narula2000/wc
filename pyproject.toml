@@ -4,4 +4,6 @@ version = "0.1.0"
 description = "This is a replicate of the linux `wc` command line interface application. This is done as part of the codingchallenges.fyi challenges"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pytest>=9.0.1",
+]
