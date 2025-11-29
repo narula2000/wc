@@ -18,6 +18,17 @@ def count_lines(file):
     return sum((1 for line in lines))
 
 
+def count_words(file):
+    with open(file, "r") as txt:
+        lines = txt.readlines()
+
+    word_count = 0
+    for line in lines:
+        words = line.split()
+        word_count += len(words)
+    return word_count
+
+
 def flag_hanlder(arguments):
     if arguments.lines:
         line_count = count_lines(arguments.file)
@@ -25,7 +36,8 @@ def flag_hanlder(arguments):
     elif arguments.bytes:
         print("Byte count detected")
     elif arguments.words:
-        print("Word count detected")
+        word_count = count_words(arguments.file)
+        print(f"{word_count} {arguments.file}")
     elif arguments.chars:
         print("Char count detected")
     else:
