@@ -39,11 +39,10 @@ class TestMain:
         output = capsys.readouterr().out
         assert "7145  58164  342190 test.txt\n" == output
 
-    def test_no_file_input(self, capsys):
-        """Testing the no file input for the `wc` command"""
-        flags = ["-l", "-c", "-w", "-m", None]
-        for flag in flags:
-            test_args = [flag]
-            main(test_args)
-            output = capsys.readouterr().out
-            assert "A file is needed\n" == output
+    def test_multiple_file_input(self, capsys):
+        """Testing the file input for the `wc` command"""
+        test_args = [self.TEST_FILE, self.TEST_FILE]
+        main(test_args)
+        output = capsys.readouterr().out
+        expected = "7145  58164  342190 test.txt\n7145  58164  342190 test.txt\n14290  116328  684380 total\n"
+        assert expected == output
