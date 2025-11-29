@@ -34,3 +34,7 @@ To run the testing suite you will call:
 uv run pytest -s -v
 ```
 
+To run the linter you will call:
+```bash
+uv run ruff check --fix .
+```
