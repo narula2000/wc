@@ -1,4 +1,5 @@
 import argparse
+import os
 
 
 def setup_parser(arguments=None):
@@ -41,6 +42,10 @@ def count_byte(file):
 
 
 def flag_hanlder(arguments):
+    if not arguments.file or not os.path.isfile(arguments.file):
+        print("A file is needed")
+        exit()
+
     if arguments.lines:
         line_count = count_lines(arguments.file)
         print(f"{line_count} {arguments.file}")
