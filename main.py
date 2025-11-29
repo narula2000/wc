@@ -11,17 +11,19 @@ def setup_parser(arguments=None):
     return parser.parse_args(arguments)
 
 
-def count_lines(file):
+def read_file(file):
     with open(file, "r") as txt:
         lines = txt.readlines()
+    return lines
 
+
+def count_lines(file):
+    lines = read_file(file)
     return sum((1 for line in lines))
 
 
 def count_words(file):
-    with open(file, "r") as txt:
-        lines = txt.readlines()
-
+    lines = read_file(file)
     word_count = 0
     for line in lines:
         words = line.split()
