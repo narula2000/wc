@@ -22,69 +22,60 @@ def setup_parser(arguments=None):
     return parser.parse_args(arguments)
 
 
-def read_file(file):
-    with open(file, "r") as txt:
-        lines = txt.readlines()
+def count_lines(bytes):
+    lines = 0
+    for char in bytes.decode():
+        if char == "\n":
+            lines += 1
     return lines
 
 
-def count_lines(file):
-    lines = read_file(file)
-    return sum((1 for _ in lines))
+def count_byte(bytes):
+    return len(bytes)
 
 
-def count_byte(file):
-    with open(file, "rb") as txt:
-        content = txt.read()
+def count_words(bytes):
+    words = bytes.decode().split()
+    return len([word for word in words if words != ""])
+
+
+def count_chars(bytes):
+    content = bytes.decode()
     return len(content)
 
 
-def count_words(file):
-    lines = read_file(file)
-    word_count = 0
-    for line in lines:
-        words = line.split()
-        word_count += len(words)
-    return word_count
-
-
-def count_chars(file):
-    with open(file, "rb") as txt:
-        content = txt.read().decode()
-    return len(content)
-
-
-def handle_file(arguments, file, agg):
+def handle_file(arguments, bytes, agg, filename):
     if arguments.lines:  # -l
-        line_count = count_lines(file)
+        line_count = count_lines(bytes)
         agg.line_count += line_count
-        print(f"{line_count} {file}")
+        print(f"{line_count} {filename}")
     elif arguments.bytes:  # -c
-        byte_count = count_byte(file)
+        byte_count = count_byte(bytes)
         agg.byte_count += byte_count
-        print(f"{byte_count} {file}")
+        print(f"{byte_count} {filename}")
     elif arguments.words:  # -w
-        word_count = count_words(file)
+        word_count = count_words(bytes)
         agg.word_count += word_count
-        print(f"{word_count} {file}")
+        print(f"{word_count} {filename}")
     elif arguments.chars:  # -m
-        char_count = count_chars(file)
-        print(f"{char_count} {file}")
+        char_count = count_chars(bytes)
+        print(f"{char_count} {filename}")
     else:  # We will use flag -c, -l -w
-        line_count = count_lines(file)
-        word_count = count_words(file)
-        byte_count = count_byte(file)
+        line_count = count_lines(bytes)
+        word_count = count_words(bytes)
+        byte_count = count_byte(bytes)
         agg.line_count += line_count
         agg.byte_count += byte_count
         agg.word_count += word_count
-        print(f"{line_count}  {word_count}  {byte_count} {file}")
+        print(f"{line_count}  {word_count}  {byte_count} {filename}")
 
 
 def flag_hanlder(arguments, agg):
     if arguments.files:
         for file in arguments.files:
             if os.path.isfile(file):
-                handle_file(arguments, file, agg)
+                with open(file, "rb") as bytes:
+                    handle_file(arguments, bytes.read(), agg, file)
         if len(arguments.files) > 1:
             if arguments.lines:  # -l
                 print(f"{agg.line_count} total")
@@ -95,7 +86,7 @@ def flag_hanlder(arguments, agg):
             else:
                 print(f"{agg.line_count}  {agg.word_count}  {agg.byte_count} total")
     else:
-        handle_file(arguments, sys.stdin.buffer.read(), agg)
+        handle_file(arguments, sys.stdin.buffer.read(), agg, "")
 
 
 def main(argv=None):
