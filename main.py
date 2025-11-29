@@ -23,6 +23,12 @@ def count_lines(file):
     return sum((1 for line in lines))
 
 
+def count_byte(file):
+    with open(file, "rb") as txt:
+        content = txt.read()
+    return len(content)
+
+
 def count_words(file):
     lines = read_file(file)
     word_count = 0
@@ -32,9 +38,9 @@ def count_words(file):
     return word_count
 
 
-def count_byte(file):
+def count_chars(file):
     char_count = 0
-    with open(file, "rb") as txt:
+    with open(file, "r", encoding="utf-8") as txt:
         for line in txt:
             for char in line:
                 char_count += 1
@@ -56,7 +62,8 @@ def flag_hanlder(arguments):
         word_count = count_words(arguments.file)
         print(f"{word_count} {arguments.file}")
     elif arguments.chars:
-        print("Char count detected")
+        char_count = count_chars(arguments.file)
+        print(f"{char_count} {arguments.file}")
     else:
         print("No flag")
 
