@@ -39,33 +39,33 @@ def count_words(file):
 
 
 def count_chars(file):
-    char_count = 0
-    with open(file, "r", encoding="utf-8") as txt:
-        for line in txt:
-            for char in line:
-                char_count += 1
-    return char_count
+    with open(file, "rb") as txt:
+        content = txt.read().decode()
+    return len(content)
 
 
 def flag_hanlder(arguments):
     if not arguments.file or not os.path.isfile(arguments.file):
         print("A file is needed")
-        exit()
+        return
 
-    if arguments.lines:
+    if arguments.lines:  # -l
         line_count = count_lines(arguments.file)
         print(f"{line_count} {arguments.file}")
-    elif arguments.bytes:
+    elif arguments.bytes:  # -c
         byte_count = count_byte(arguments.file)
         print(f"{byte_count} {arguments.file}")
-    elif arguments.words:
+    elif arguments.words:  # -w
         word_count = count_words(arguments.file)
         print(f"{word_count} {arguments.file}")
-    elif arguments.chars:
+    elif arguments.chars:  # -m
         char_count = count_chars(arguments.file)
         print(f"{char_count} {arguments.file}")
-    else:
-        print("No flag")
+    else:  # We will use flag -c, -l -w
+        line_count = count_lines(arguments.file)
+        word_count = count_words(arguments.file)
+        byte_count = count_byte(arguments.file)
+        print(f"{line_count}  {word_count}  {byte_count} {arguments.file}")
 
 
 def main(argv=None):
